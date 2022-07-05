@@ -1,0 +1,74 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+char auth[] = "XXXX";
+char ssid []= "XXXX";
+char pass[] = "XXXX";
+int i;
+int x;
+int y;
+int xflag;
+
+String str,temp;
+
+
+
+void setup() 
+{
+  
+  Serial.begin(9600);
+  Blynk.begin(auth,ssid,pass);
+
+}
+
+
+
+void loop()
+{
+  Blynk.run();
+  
+   if (Serial.available())
+   {
+    str = Serial.readStringUntil('#');
+    Serial.print("str:   ");
+    Serial.println(str);
+    if(str[0]=='X')
+    {
+      Serial.print("x= ");
+      i=1;
+      temp="";
+      while(str[i]!='\0')
+      {
+        temp = temp + str[i];
+        i++;
+      }
+      Serial.println(temp);
+      x = temp.toInt();
+      Serial.print("X =  ");
+      Serial.println(x);
+      Blynk.virtualWrite(V0,x);
+      }
+
+
+      if(str[0]=='Y')
+    {
+      Blynk.run();
+      Serial.print("y= ");
+      i=1;
+      temp="";
+      while(str[i]!='\0')
+      {
+        temp = temp + str[i];
+        i++;
+      }
+      Serial.println(temp);
+      y = temp.toInt();
+      Serial.print("Y =  ");
+      Serial.println(y);
+      Blynk.virtualWrite(V1,y);
+      }
+
+    }
+    delay(100);
+   
+   }
